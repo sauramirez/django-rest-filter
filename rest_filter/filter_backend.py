@@ -17,9 +17,11 @@ class BaseFilter(filters.BaseFilterBackend):
 
     def filter_queryset(self, request, qs, view):
         filter_dict = {}
-        for field, value in request.query_params.iterlists():
+        for field in request.query_params.keys():
             if field not in self.Meta.fields:
                 continue
+
+            value = request.query_params.getlist(field)
 
             # get mapped field if it exists
             # else just use the field name
